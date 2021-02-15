@@ -1,5 +1,7 @@
 #!/bin/bash
-/usr/local/bin/file_rename
+apt update 
+apt install ffmpeg -y
+rename 's/ //g' *
 dir_name_check=`pwd`
 title=${dir_name_check##*/}
 
