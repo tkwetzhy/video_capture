@@ -1,0 +1,18 @@
+#!/bin/bash
+i=0
+j=0
+youtube="youtube-dl   "
+while [ "$yn" != "no" ]
+do
+ read -p "输入下载链接，no结束" yn
+array_name[i]=$yn
+i=$(($i+1))
+
+done
+for((j=0;j<=i;j++))
+do
+echo "${youtube}  ${array_name[j]}" >> /root/log_name
+${youtube}  ${array_name[j]}
+done
+
+
