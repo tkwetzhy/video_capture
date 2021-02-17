@@ -1,10 +1,18 @@
 #!/bin/bash
 apt update 
-read -p "请输入网站的根目录，默认/mnt/sda1/nginx:" www_dir
-
-if [ $www_dir == "" ];then
 www_dir="/mnt/sda1/nginx"
+
+read -p "请输入网站的根目录，默认/mnt/sda1/nginx:" www_dir_input
+
+if [[ ${www_dir_input} == "" ]];then
+
+www_dir="/mnt/sda1/nginx"
+else
+ www_dir=${www_dir_input}
 fi
+echo $www_dir
+
+
 
 if [ -e /usr/bin/ffmpeg ];then
 echo "已经安装了ffmpeg"
@@ -25,9 +33,9 @@ echo "正在去除文件名的空格"
 rename 's/[[:space:]]//g' *
 
 echo "正在去除文件名的特殊符号"
-rename 's/\&//g' *
-rename 's/\#//g' *
-
+rename 's/&//g' *
+rename 's/#//g' *
+rename "s/\'//g" *
 dir_name_check=`pwd`
 title=${dir_name_check##*/}
 
@@ -109,8 +117,8 @@ dir_name_check=`pwd`
 title=${dir_name_check##*/}
 
 sed  "52c fileShow(\'./photo/porn_cate/$title\',\'$dir_name_check\');"   -i  $www_dir/$title.php
-sed  's/\/mnt\/sda1\/nginx/./g' -i /mnt/sda1/nginx/$title.php
-sed "21c <p>$title</p>"  -i /mnt/sda1/nginx/$title.php
+sed  's/\/mnt\/sda1\/nginx/./g' -i  $www_dir/$title.php
+sed "21c <p>$title</p>"  -i  $www_dir/$title.php
 
 
 
