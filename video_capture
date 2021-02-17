@@ -24,6 +24,10 @@ echo "正在去除文件名的空格"
 
 rename 's/[[:space:]]//g' *
 
+echo "正在去除文件名的特殊符号"
+rename 's/\&//g' *
+rename 's/\#//g' *
+
 dir_name_check=`pwd`
 title=${dir_name_check##*/}
 
