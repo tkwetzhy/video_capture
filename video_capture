@@ -1,8 +1,29 @@
 #!/bin/bash
 apt update 
+read -p "请输入网站的根目录，默认/mnt/sda1/nginx:" www_dir
+
+if [ $www_dir == "" ];then
+www_dir="/mnt/sda1/nginx"
+fi
+
+if [ -e /usr/bin/ffmpeg ];then
+echo "已经安装了ffmpeg"
+
+else 
 apt install ffmpeg -y
+fi
+if [ -e /usr/bin/rename ];then
+
+echo "已经安装了rename"
+else
+
 apt install rename -y
-rename 's/ //g' *
+fi
+
+echo "正在去除文件名的空格"
+
+rename 's/[[:space:]]//g' *
+
 dir_name_check=`pwd`
 title=${dir_name_check##*/}
 
@@ -69,21 +90,21 @@ ffmpeg -f image2 -framerate 5 -i ./$img_name-%03d.jpeg $img_name.gif
     }       #读取第一个参数
 
 read_dir $1
-if [ -d /mnt/sda1/nginx/photo/porn_cate/$title ];then
+if [ -d $www_dir/photo/porn_cate/$title ];then
 	echo "已经存在"
-	rm -rf /mnt/sda1/nginx/photo/porn_cate/$title/*
+	rm -rf $www_dir/photo/porn_cate/$title/*
 else
 
-mkdir /mnt/sda1/nginx/photo/porn_cate/$title
+mkdir $www_dir/photo/porn_cate/$title
 fi
 rm *.jpeg
-mv ./*.gif /mnt/sda1/nginx/photo/porn_cate/$title
-cat /mnt/sda1/nginx/p.php  > /mnt/sda1/nginx/$title.php
+mv ./*.gif  $www_dir/photo/porn_cate/$title
+cat $www_dir/p.php  > $www_dir/$title.php
 
 dir_name_check=`pwd`
 title=${dir_name_check##*/}
 
-sed  "52c fileShow(\'./photo/porn_cate/$title\',\'$dir_name_check\');"   -i /mnt/sda1/nginx/$title.php
+sed  "52c fileShow(\'./photo/porn_cate/$title\',\'$dir_name_check\');"   -i  $www_dir/$title.php
 sed  's/\/mnt\/sda1\/nginx/./g' -i /mnt/sda1/nginx/$title.php
 sed "21c <p>$title</p>"  -i /mnt/sda1/nginx/$title.php
 
